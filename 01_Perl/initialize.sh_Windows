@@ -1,0 +1,25 @@
+#!/bin/sh
+
+############
+
+if [ $PWD = "/home/aremon/01_Programmierung/01_Perl" ]
+        then
+            PREFIX="/home/aremon/01_Programmierung/01_Perl"
+
+############
+    elif [ $PWD = "/home/aremon/01_Programmierung/02_Python" ]
+        then
+            PREFIX = "/home/aremon/01_Programmierung/02_Python"
+
+############
+#    else
+
+############        
+fi
+
+
+
+#echo $PREFIX
+
+
+export PREFIX
