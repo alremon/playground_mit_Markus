@@ -1,0 +1,1 @@
+# Diese Datei ist dafür da den Ort zu erkennen, wo sie sich befindet und den aufgerufenen Programmen in denen es sich befindet die entsprechende Umgebungsvariable zu übergeben
