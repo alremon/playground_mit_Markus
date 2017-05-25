@@ -29,31 +29,16 @@ def extrahiere_Datum_EXIF (Datum_aus_EXIF_FUNKTION):
 
 # Pfad angeben, wo Bilder enthalten sind
 pfad = input ("Bitte den Pfad angeben, wo die Bilder enthalten sind, die in Datums-Ordner einsortiert werden sollen: ")
-#pfad = "C:\\Test"
-#datei = "001.jpg"
 
-# Datumsart
-print ("Bitte geben Sie an nach welchem Datum sortiert werden soll: ")
-print ("Datum (1)")
-print ("Aufnahmedatum (2)")
-print ("Änderungsdatum (3)")
-print ("Erstellungsdatum (4)")
-Datumsart = input ("Bitte geben Sie an nach welchem Datum sortiert werden soll (1,2,3 oder 4): ")
-
-############# Abfangmechanismus einbauen, wenn der eingegebene Wert nicht 1,2,3,4 ist
-
-# Liste erstellen mit allen JPG, jpg, MOV, mp4 Dateien des angegebenen Ordners
+# Liste erstellen mit allen JPG, jpg, MOV, mp4, NEF Dateien des angegebenen Ordners
 
 liste_aller_Dateien_des_pfads = os.listdir(pfad)
-#print (liste_aller_Dateien_des_pfads)
 
 # Schleife über alle Dateien
 for datei in liste_aller_Dateien_des_pfads:
 
     Dateipfad = (pfad + "\\" + datei)
-
     print(Dateipfad)
-
 
     # Dateiendung extrahieren
     Dateipfad_splitted_mit_Punkt = Dateipfad.split(sep=".")
@@ -63,30 +48,22 @@ for datei in liste_aller_Dateien_des_pfads:
 
         Dateidatum_nur_Datum = ""
 
-        if (Datumsart == "1"):
-            # Datum
-            Dateidatum_in_sekunden = os.path.getatime(Dateipfad)
-            Dateidatum_nur_Datum = extrahiere_Datum(Dateidatum_in_sekunden)
+        # Extrahierung des Aufnahmedatum
+        file = open(Dateipfad, 'rb')
+        tags_in_file = exifread.process_file(file)
+        for tag_in_file in tags_in_file.keys():
+            if (tag_in_file == "EXIF DateTimeOriginal"):
+                Datum_aus_EXIF = (tags_in_file[tag_in_file])
+                Dateidatum_nur_Datum = extrahiere_Datum_EXIF(Datum_aus_EXIF)
+        file.close()
 
-        elif (Datumsart == "2"):
-            file = open(Dateipfad, 'rb')
-            tags_in_file = exifread.process_file(file)
-            for tag_in_file in tags_in_file.keys():
-                if (tag_in_file == "EXIF DateTimeOriginal"):
-                    Datum_aus_EXIF = (tags_in_file[tag_in_file])
-                    Dateidatum_nur_Datum = extrahiere_Datum_EXIF(Datum_aus_EXIF)
-            file.close()
-
-        elif (Datumsart == "3"):
-            # Änderungsdatum
+        # Extrahierung des Aenderungsdatums, falls kein Aufnahmedatum gefunden
+        if (Dateidatum_nur_Datum == ""):
+            # Aenderungsdatum
             Dateidatum_in_sekunden = os.path.getmtime(Dateipfad)
             Dateidatum_nur_Datum = extrahiere_Datum(Dateidatum_in_sekunden)
 
-        elif (Datumsart == "4"):
-            # Erstellungsdatum
-            Dateidatum_in_sekunden = os.path.getctime(Dateipfad)
-            Dateidatum_nur_Datum = extrahiere_Datum(Dateidatum_in_sekunden)
-
+        # Verschiebung der Datei in den Ordner, falls Datum gefunden
         if Dateidatum_nur_Datum != "":
 
             # Erstellen des Datumpfads
