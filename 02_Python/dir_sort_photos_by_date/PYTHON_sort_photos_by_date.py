@@ -44,7 +44,7 @@ for datei in liste_aller_Dateien_des_pfads:
     Dateipfad_splitted_mit_Punkt = Dateipfad.split(sep=".")
     Dateiendung = Dateipfad_splitted_mit_Punkt[-1]
 
-    if (Dateiendung == "jpg" or Dateiendung == "JPG" or Dateiendung == "MOV" or Dateiendung == "mov" or Dateiendung == "mp4" or Dateiendung == "png" or Dateiendung == "PNG" or Dateiendung == "NEF" or Dateiendung == "nef"):
+    if (Dateiendung == "jpg" or Dateiendung == "JPG" or Dateiendung == "jpeg" or Dateiendung == "JPEG" or Dateiendung == "MOV" or Dateiendung == "mov" or Dateiendung == "mp4" or Dateiendung == "png" or Dateiendung == "PNG" or Dateiendung == "NEF" or Dateiendung == "nef"or Dateiendung == "WAV" or Dateiendung == "wav" or Dateiendung == "mp3" or Dateiendung == "opus"):
 
         Dateidatum_nur_Datum = ""
 
